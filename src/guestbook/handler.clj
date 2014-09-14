@@ -12,9 +12,11 @@
             [environ.core :refer [env]]
             [cronj.core :as cronj]))
 
+(require '[guestbook.db :as db])
+
 (defroutes base-routes
-  (route/resources "/")
-  (route/not-found "Not Found"))
+           (route/resources "/")
+           (route/not-found "Not Found"))
 
 (defn init
   "init will be called once when
@@ -24,11 +26,11 @@
   []
   (timbre/set-config!
     [:appenders :rotor]
-    {:min-level :info
-     :enabled? true
-     :async? false ; should be always false for rotor
+    {:min-level             :info
+     :enabled?              true
+     :async?                false                           ; should be always false for rotor
      :max-message-per-msecs nil
-     :fn rotor/appender-fn})
+     :fn                    rotor/appender-fn})
 
   (timbre/set-config!
     [:shared-appender-config :rotor]
@@ -37,6 +39,7 @@
   (if (env :dev) (parser/cache-off!))
   ;;start the expired session cleanup job
   (cronj/start! session-manager/cleanup-job)
+  (db/import-test-data)
   (timbre/info "guestbook started successfully"))
 
 (defn destroy
@@ -53,7 +56,7 @@
            ;; add custom middleware here
            :middleware (load-middleware)
            ;; timeout sessions after 30 minutes
-           :session-options {:timeout (* 60 30)
+           :session-options {:timeout          (* 60 30)
                              :timeout-response (redirect "/")}
            ;; add access rules here
            :access-rules []
