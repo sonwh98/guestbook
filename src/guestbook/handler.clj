@@ -13,6 +13,7 @@
             [cronj.core :as cronj]))
 
 (require '[guestbook.db :as db])
+(require '[datomic.api :as datomic])
 
 (defroutes base-routes
            (route/resources "/")
@@ -24,6 +25,7 @@
    an app server such as Tomcat
    put any initialization code here"
   []
+  (datomic/shutdown true)
   (timbre/set-config!
     [:appenders :rotor]
     {:min-level             :info
