@@ -25,6 +25,7 @@
    an app server such as Tomcat
    put any initialization code here"
   []
+  (shutdown-agents)
   (datomic/shutdown true)
   (timbre/set-config!
     [:appenders :rotor]
@@ -48,6 +49,8 @@
   "destroy will be called when your application
    shuts down, put any clean up code here"
   []
+  (shutdown-agents)
+  (datomic/shutdown true)
   (timbre/info "guestbook is shutting down...")
   (cronj/shutdown! session-manager/cleanup-job)
   (timbre/info "shutdown complete!"))
