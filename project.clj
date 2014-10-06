@@ -12,7 +12,9 @@
                  [im.chit/cronj "1.4.2"]
                  [noir-exception "0.2.2"]
                  [prone "0.6.0"]
+                 ;[com.datomic/datomic-pro "0.9.4899"]
                  [com.datomic/datomic-free "0.9.4899"]
+                 [mysql/mysql-connector-java "5.1.6"]
                  ]
 
   :repl-options {:init-ns guestbook.repl}

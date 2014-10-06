@@ -2,7 +2,7 @@
 
 (require '[datomic.api :as datomic])
 (def uri "datomic:mem://guestbook")
-
+;(def uri "datomic:sql://guestbook?jdbc:mysql://localhost/datomic?user=datomic&password=datomic")
 (defn db-exists? [uri] (not (datomic/create-database uri)))
 (defn get-connection [] (datomic/connect uri))
 (defn get-db [] (datomic/db (get-connection)))
